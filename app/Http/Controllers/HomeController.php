@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Article;
 use Illuminate\Http\Request;
 
-class ArticleController extends Controller
+class HomeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,7 +13,7 @@ class ArticleController extends Controller
     public function index()
     {
         $articles = Article::with('category', 'tags')->latest()->get();
-        return view('home', compact('articles'));
+        return view('pages.home', compact('articles'));
     }
 
     /**
@@ -21,6 +21,6 @@ class ArticleController extends Controller
      */
     public function show(Article $article)
     {
-        return view('article', compact('article'));
+        return view('pages.article', compact('article'));
     }
 }

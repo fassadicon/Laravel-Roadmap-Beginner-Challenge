@@ -15,12 +15,25 @@
                     {{-- <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link> --}}
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    @guest
+                    <x-nav-link :href="route('home')" :active="request()->routeIs('home')">
                         {{ __('Articles') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    <x-nav-link :href="route('about')" :active="request()->routeIs('about')">
                         {{ __('About') }}
                     </x-nav-link>
+                    @endguest
+                    @auth
+                    <x-nav-link :href="route('admin.articles.index')" :active="request()->routeIs('admin.articles.index')">
+                        {{ __('Articles') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('admin.categories.index')" :active="request()->routeIs('admin.categories.index')">
+                        {{ __('Categories') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('admin.tags.index')" :active="request()->routeIs('admin.tags.index')">
+                        {{ __('Tags') }}
+                    </x-nav-link>
+                    @endauth
                 </div>
             </div>
 
