@@ -13,8 +13,12 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-        Category::create([
-            'name' => 'Web Development'
-        ]);
+        $categories = [
+            ['name' => 'Frontend Development'],
+            ['name' => 'Cyber Security'],
+            ['name' => 'Mobile Development'],
+            ['name' => 'Backend Development']
+        ];
+        Category::insert($categories);
     }
 }

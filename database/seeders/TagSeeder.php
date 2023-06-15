@@ -15,7 +15,11 @@ class TagSeeder extends Seeder
     {
         $tags = [
             ['name' => 'Laravel'],
-            ['name' => 'PHP']
+            ['name' => 'PHP'],
+            ['name' => 'ReactJS'],
+            ['name' => 'Linux'],
+            ['name' => 'NodeJS'],
+            ['name' => 'API']
         ];
         Tag::insert($tags);
     }

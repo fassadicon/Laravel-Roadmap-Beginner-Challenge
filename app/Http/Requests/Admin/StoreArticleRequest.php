@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Admin;
 
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreArticleRequest extends FormRequest
@@ -11,9 +12,15 @@ class StoreArticleRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
+    public function prepareForValidation() {
+        $this->merge([
+            'category_id' => +(Crypt::decryptString($this->category)),
+            'tags' => explode(',', $this->tags)
+        ]);
+    }
     /**
      * Get the validation rules that apply to the request.
      *
@@ -22,7 +29,11 @@ class StoreArticleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title' => 'required|max:255',
+            'full_text' => 'required',
+            'category_id' => 'required|exists:categories,id',
+            'tags' => 'required|bail|array'
         ];
+
     }
 }

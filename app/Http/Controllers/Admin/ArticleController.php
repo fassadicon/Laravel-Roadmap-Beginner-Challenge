@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Models\Tag;
 use App\Models\Article;
-use App\Http\Requests\StoreArticleRequest;
-use App\Http\Requests\UpdateArticleRequest;
+use App\Models\Category;
+use Illuminate\Support\Str;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Crypt;
+use App\Http\Requests\Admin\StoreArticleRequest;
+use App\Http\Requests\Admin\UpdateArticleRequest;
 
 class ArticleController extends Controller
 {
@@ -23,7 +27,8 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        return view('admin.articles.create');
+        $categories = Category::select('id', 'name')->get();
+        return view('admin.articles.create', compact('categories'));
     }
 
     /**
@@ -31,23 +36,34 @@ class ArticleController extends Controller
      */
     public function store(StoreArticleRequest $request)
     {
-        //
+        $article = $request->validated();
+        $article['user_id'] = auth()->user()->id;
+        $article = Article::create($article);
+        // dd($request->safe()->tags);
+        foreach ($request->safe()->tags as $tagName) {
+            $tagName = Str::of($tagName)->ltrim();
+            $tag = Tag::firstOrCreate(['name' => $tagName]);
+            $article->tags()->attach($tag);
+        }
+
+        return redirect()->route('admin.articles.index');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Article $article)
-    {
-        //
-    }
+    // public function show(Article $article)
+    // {
+    //     //
+    // }
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(Article $article)
     {
-        return redirect();
+        $categories = Category::select('id', 'name')->get();
+        return view('admin.articles.edit', compact('article', 'categories'));
     }
 
     /**
@@ -55,7 +71,17 @@ class ArticleController extends Controller
      */
     public function update(UpdateArticleRequest $request, Article $article)
     {
-        //
+        $test = $article->update($request->validated());
+        // dd($test);
+        $newTags = [];
+        foreach ($request->safe()->tags as $tagName) {
+            $tagName = Str::of($tagName)->ltrim();
+            $tag = Tag::firstOrCreate(['name' => $tagName]);
+            array_push($newTags, $tag->id);
+        }
+        $article->tags()->sync($newTags);
+
+        return redirect()->route('admin.articles.index');
     }
 
     /**
