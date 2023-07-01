@@ -23,10 +23,7 @@
             <tbody>
                 @foreach ($categories as $category)
                     <tr>
-                        <td>
-                            {{-- <a href="{{ route('show', [$article]) }}">{{ $article->title }}</a> --}}
-                            {{ $category->name }}
-                        </td>
+                        <td><a href="{{ route('admin.categories.show', [$category]) }}">{{ $category->name }}</a></td>
                         <td>{{ $category->articles()->count() }}</td>
                         <td>{{ $category->created_at }}</td>
                         <td>{{ $category->updated_at }}</td>
