@@ -4,7 +4,8 @@
             Manage Articles
         </h2>
         <div>
-            <a href="{{ route('admin.articles.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">Create</a>
+            <a href="{{ route('admin.articles.create') }}"
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">Create</a>
         </div>
 
     </x-slot>
@@ -24,7 +25,9 @@
             <tbody>
                 @foreach ($articles as $article)
                     <tr>
-                        <td>{{ $article->title }}</td>
+                        <td>
+                            <a href="{{ route('show', [$article]) }}">{{ $article->title }}</a>
+                        </td>
                         <td>{{ $article->image }}</td>
                         <td>{{ $article->category->name }}</td>
                         <td>
@@ -40,9 +43,16 @@
                                 class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
                                 Edit
                             </a>
-                            {{-- <a href="{{ route('admin.articles.destory', [$article]) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                            {{-- <a href="{{ route('admin.articles.destroy', [$article]) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
                                 Delete
                             </a> --}}
+                            <form action="{{ route('admin.articles.destroy', [$article]) }}" method="POST"
+                                onsubmit="return confirm('Are you sure?');" style="display: inline-block;">
+                                @csrf
+                                @method('DELETE')
+                                <input type="submit" value="Delete"
+                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                            </form>
                         </td>
                     </tr>
                 @endforeach

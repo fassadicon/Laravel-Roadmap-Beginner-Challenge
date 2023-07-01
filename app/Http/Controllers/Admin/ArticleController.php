@@ -52,10 +52,10 @@ class ArticleController extends Controller
     /**
      * Display the specified resource.
      */
-    // public function show(Article $article)
-    // {
-    //     //
-    // }
+    public function show(Article $article)
+    {
+        return view('pages.article', compact('article'));
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -89,6 +89,8 @@ class ArticleController extends Controller
      */
     public function destroy(Article $article)
     {
-        return redirect();
+        $article->tags()->detach();
+        $article->delete();
+        return redirect()->route('admin.articles.index');
     }
 }

@@ -20,7 +20,7 @@ use App\Http\Controllers\Admin\CategoryController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::view('/about', 'pages.about')->name('about');
-// Route::get('/articles/{article}', [HomeController::class, 'show'])->name('show');
+Route::get('/articles/{article}', [HomeController::class, 'show'])->name('show');
 
 Route::group([
     'prefix' => 'admin',
