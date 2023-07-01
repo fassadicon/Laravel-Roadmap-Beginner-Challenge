@@ -29,11 +29,13 @@
                             <a href="{{ route('show', [$article]) }}">{{ $article->title }}</a>
                         </td>
                         <td>{{ $article->image }}</td>
-                        <td>{{ $article->category->name }}</td>
+                        <td>{{ $article->category->name ?? 'Uncategorized'}}</td>
                         <td>
-                            @foreach ($article->tags as $tag)
+                            @forelse ($article->tags as $tag)
                                 {{ $tag->name }}
-                            @endforeach
+                            @empty
+                                No tags
+                            @endforelse
                         </td>
                         <td>{{ $article->user->name }}</td>
                         <td>{{ $article->created_at }}</td>
@@ -43,9 +45,6 @@
                                 class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
                                 Edit
                             </a>
-                            {{-- <a href="{{ route('admin.articles.destroy', [$article]) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
-                                Delete
-                            </a> --}}
                             <form action="{{ route('admin.articles.destroy', [$article]) }}" method="POST"
                                 onsubmit="return confirm('Are you sure?');" style="display: inline-block;">
                                 @csrf

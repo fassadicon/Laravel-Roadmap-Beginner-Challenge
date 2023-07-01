@@ -71,8 +71,8 @@ class ArticleController extends Controller
      */
     public function update(UpdateArticleRequest $request, Article $article)
     {
-        $test = $article->update($request->validated());
-        // dd($test);
+        $article->update($request->validated());
+
         $newTags = [];
         foreach ($request->safe()->tags as $tagName) {
             $tagName = Str::of($tagName)->ltrim();
